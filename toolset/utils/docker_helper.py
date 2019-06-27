@@ -93,6 +93,14 @@ class DockerHelper:
             self.benchmarker.time_logger.log_build_end(
                 log_prefix=log_prefix, file=build_log)
 
+    def clean_test_image(self, test):
+        for image in self.server.images.list():
+            if len(image.tags) > 0:
+                # 'techempower/tfb.test.gemini:0.1' -> 'techempower/tfb.test.gemini'
+                image_tag = image.tags[0].split(':')[0]
+                if image_tag == "techempower/tfb.test.%s" % test.name:
+                    self.server.images.remove(image.id, force=True)
+
     def clean(self):
         '''
         Cleans all the docker images from the system

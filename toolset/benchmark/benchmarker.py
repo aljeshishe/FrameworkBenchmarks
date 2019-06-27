@@ -229,6 +229,7 @@ class Benchmarker:
                 file=benchmark_log)
         finally:
             self.docker_helper.stop()
+            self.docker_helper.clean_test_image(test)
 
         return self.__exit_test(
             success=True, prefix=log_prefix, file=benchmark_log)
